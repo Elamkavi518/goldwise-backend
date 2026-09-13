@@ -13,6 +13,10 @@ router.use('/orders', require('./orderRoutes'));
 router.use('/reviews', require('./reviewRoutes'));
 router.use('/admin', require('./adminRoutes'));
 router.use('/cron', require('./cronRoutes'));
+router.use('/messages', require('./messageRoutes'));
+router.use('/search', require('./searchRoutes'));
+router.use('/location', require('./locationRoutes'));
+router.use('/jewelry', require('./productRoutes'));
 
 router.get('/health', (req, res) => res.json({ success: true, message: 'GoldWise API is running.', time: new Date().toISOString() }));
 

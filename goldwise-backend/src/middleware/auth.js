@@ -38,3 +38,20 @@ function requireRole(...roles) {
 }
 
 module.exports = { authenticate, requireRole };
+
+// Attaches req.user if a valid token is present, but never blocks the request when it's
+// missing/invalid — for endpoints that are public but personalize when signed in (search).
+const { verifyAccessToken: _verifyAccessToken } = require('../utils/jwt');
+async function optionalAuthenticate(req, res, next) {
+  const header = req.headers.authorization || '';
+  const token = header.startsWith('Bearer ') ? header.slice(7) : null;
+  if (!token) return next();
+  try {
+    const payload = _verifyAccessToken(token);
+    const { User: _User } = require('../models');
+    const user = await _User.findByPk(payload.sub);
+    if (user) req.user = user;
+  } catch { /* invalid/expired token — proceed as anonymous */ }
+  next();
+}
+module.exports.optionalAuthenticate = optionalAuthenticate;

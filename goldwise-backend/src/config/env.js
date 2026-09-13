@@ -68,4 +68,8 @@ module.exports = {
   },
 
   cronSecret: process.env.CRON_SECRET || '',
+
+  places: {
+    apiKey: process.env.GOOGLE_PLACES_API_KEY || '',
+  },
 };

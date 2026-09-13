@@ -14,6 +14,9 @@ const OrderItem = require('./OrderItem');
 const Review = require('./Review');
 const SystemSetting = require('./SystemSetting');
 const AuditLog = require('./AuditLog');
+const Conversation = require('./Conversation');
+const Message = require('./Message');
+const SearchHistory = require('./SearchHistory');
 
 User.hasMany(RefreshToken, { foreignKey: 'userId' });
 RefreshToken.belongsTo(User, { foreignKey: 'userId' });
@@ -46,6 +49,11 @@ Review.belongsTo(User, { foreignKey: 'userId' });
 Store.hasMany(Review, { foreignKey: 'storeId' });
 Review.belongsTo(Store, { foreignKey: 'storeId' });
 
+User.hasMany(Conversation, { foreignKey: 'userId' });
+Conversation.belongsTo(User, { foreignKey: 'userId' });
+Conversation.hasMany(Message, { foreignKey: 'conversationId', as: 'messages' });
+Message.belongsTo(Conversation, { foreignKey: 'conversationId' });
+
 module.exports = {
   sequelize,
   User,
@@ -63,4 +71,7 @@ module.exports = {
   Review,
   SystemSetting,
   AuditLog,
+  Conversation,
+  Message,
+  SearchHistory,
 };
